@@ -1,0 +1,86 @@
+{% extends 'layouts/mainLayout.html' %}
+
+{% block style %}
+
+
+    <style>
+
+        body{
+            
+            background-color: rgb(8, 14, 44);
+            height: 100%;
+            
+        }
+
+        #loginForm{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            
+        }
+
+        #loginBtn{
+            padding: 5px 70px;
+        }
+
+        #loginCard{
+            background-color: rgba(255,255,255, 0.8);
+            border-radius: 20px;
+        }
+
+        input[type='email'],input[type='password']{
+            background-color: rgba(255,255,255, 0.65);
+        }
+
+
+    </style>
+  
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6" id="loginForm">
+            <div class="card m-3" id="loginCard">
+                <h2 class="text-primary mt-4 text-center font-weight-bold">Login Form</h2>
+                <div class="card-body my-3">
+                    {% if error != None %}
+                        <div class="alert alert-danger text-center">{{error}}</div>
+                    {% endif %}
+            
+                  <form action="" method="post" class="mx-3">
+            
+                    {% csrf_token %}
+                
+                    <!-- {{form.as_p}} -->
+                    <div class="form-group ">
+                    <label for="username" class="col-form-label mr-2 font-weight-bold">Username:</label>
+                        <input type="email" class="form-control mb-3 " name="username" id="username" placeholder="Enter your email">
+                        {{form.username.errors}}
+                    </div>
+                    <div class="form-group ">
+                        <label for="password" class="col-form-label mr-2 pr-1 font-weight-bold">Password:</label>
+                            <input type="password" class="form-control mb-1 " name="password" id="password" placeholder="Enter your password">
+                            {{form.password.errors}}
+                        </div>
+
+                   <div class="d-flex justify-content-center">
+                        <input id="loginBtn" type="submit" value="Login" class="btn btn-primary">
+                   </div>
+                
+                </form>
+                </div>
+                <div class="d-flex justify-content-center mb-3">
+                <h6>Don't have an account ?&nbsp;<a class="card-link text-danger font-weight-bold" href="{% url 'signup' %}">Signup</a></h6>
+                </div>
+              </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

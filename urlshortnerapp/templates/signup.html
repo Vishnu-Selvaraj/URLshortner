@@ -1,0 +1,120 @@
+{% extends 'layouts/mainLayout.html' %}
+
+{% block style %}
+
+<style>
+  
+  body{
+    background-color: rgb(8, 14, 44);
+    height: 100%;
+  }
+
+ 
+  #signupForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #signBtn {
+    padding: 5px 70px;
+  }
+
+  #signupCard {
+    background-color: rgba(255,255,255, 0.8);
+    border-radius: 20px;
+  }
+
+  input[type='email'],input[type='password']{
+        background-color: rgba(255,255,255, 0.65);
+  }
+
+
+  
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6" id="signupForm">
+      <div class="card border" id="signupCard">
+        <div class="card-body">
+          <h2 class="card-title mb-4 text-primary text-center font-weight-bold">Signup Form</h2>
+          <form action="" method="post" class="mb-4">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="username" class="col-form-label mr-2 font-weight-bold"
+                >Username:</label
+              >
+              <input
+                type="email"
+                class="form-control mb-3"
+                name="username"
+                id="username"
+                placeholder="Enter your email"
+                autofocus
+              />
+              {{form.username.errors}}
+            </div>
+            <div class="form-group">
+              <label
+                for="password"
+                class="col-form-label  font-weight-bold"
+                >Password:</label
+              >
+              <input
+                type="password"
+                class="form-control  mb-3"
+                name="password1"
+                id="password"
+                placeholder="Enter your password"
+              />
+              {{form.password1.errors}}
+            </div>
+
+            <div class="form-group">
+              <label
+                for="password"
+                class="col-form-label font-weight-bold"
+                >Confirm Password:</label
+              >
+              <input
+                type="password"
+                class="form-control  mb-1 "
+                name="password2"
+                id="password"
+                placeholder="confirm your password"
+              />
+              {{form.password2.errors}}
+            </div>
+
+            <div class="d-flex justify-content-center">
+              <input
+                type="submit"
+                id="signBtn"
+                value="Signup"
+                class="btn btn-primary"
+              />
+            </div>
+          </form>
+          <div class="d-flex justify-content-center mb-2">
+            <h6>
+              Already have an account ?&nbsp;<a
+                class="card-link text-danger font-weight-bold"
+                href="{% url 'login' %}"
+                >Login</a
+              >
+            </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

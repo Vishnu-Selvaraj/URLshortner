@@ -1,0 +1,227 @@
+{% extends 'layouts/mainLayout.html' %}
+
+{% block style %}
+
+<style>
+
+  body{
+    background-color: rgb(8, 14, 44);
+    height: 100%;
+  }
+
+  #listCard{
+    background-color: transparent;
+  }
+
+  .listBtn{
+    padding: 5px 20px;
+  }
+
+  #search-input{
+    color: #fff;
+    background-color: rgb(8, 14, 44);
+  }
+
+  .deleteModal{
+    border: none;
+    background-color: rgba(8, 14, 44, 0.95);
+    border-radius: 20px;
+  }
+
+  /* #search-button{
+    padding: 3px 15px;
+  } */
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col mt-3">
+                <h2 class="card-header text-white text-center font-weight-bold mb-4" id="heading">URL LIST</h2>
+                <form id="search-form" class="d-flex justify-content-center"  action="" method="GET">
+
+                    <input type="text" value="" class="form-control col-6 mr-2" id="search-input" placeholder="Enter the search title or url">
+            
+                    <!-- <button type="submit" class="btn btn-sm btn-primary" id="search-button">Search</button> -->
+                </form>            
+            </div>
+        </div>
+    </div>
+<script>
+
+// AJAX Search
+
+$(document).ready(function(){
+
+$('#search-form').on('keyup',function(event){
+    event.preventDefault()
+    var data = $('#search-input').val()
+    console.log(data)
+    $.ajax({
+        url:"{% url 'search' %}",
+
+        type:"GET",
+
+        data :{
+            getdata :data
+        },
+
+
+        success:function(data){
+            $('#table-body').empty()
+            $('#thead').empty()
+            $('#heading').empty()
+            $('#heading').html('URL LIST')
+
+            if(data.length > 0){
+
+                $('#thead').append(
+                    "<tr class='text-center text-info'>"+
+                        '<th>'+'Title'+'</th>'+
+                        '<th>'+'original Url'+'</th>'+
+                        '<th>'+'Short Url'+'</th>'+
+                        '<th>'+'Time'+'</th>'+
+                        '<th colspan="2">'+'Actions'+'</th>'+
+                    "</tr>"
+                )
+
+                data.forEach(elem => {
+                        $('#table-body').append(
+
+                            "<tr class='p-2 text-center text-white'>"+
+                                '<td class="align-middle">'+elem.title+'</td>'+
+                                '<td class="align-middle">'+elem.originalurl+'</td>'+
+                                '<td class="align-middle">'+elem.shorturl+'</td>'+
+                                '<td class="align-middle">'+elem.time+'</td>'+
+                                '<td class="align-middle">'+'<a href="'+/edit-page/+ elem.id+'"class="btn btn-outline-success listBtn">Edit</a>'+'</td>'+
+                                '<td class="align-middle">'+'<a href="'+'#deleteModal'+ elem.id+'"data-toggle="modal" class="btn btn-outline-danger listBtn">Delete</a>'+'</td>'+
+                            "</tr>"
+
+                        )
+
+                    });
+            }else{
+            $('#table-body').empty()
+            $('#thead').empty()
+            
+
+            $('#table-body').html(
+                    "<h1 class = 'text-center text-white'>"+"No data Found"+"</h1>"
+                )
+            }
+
+        },
+
+        error:function(xhr,status,error){
+
+            console.log('Something went wrong')
+        }
+        
+    })
+
+    
+})
+
+})
+
+ </script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+                <div class="table-responsive mb-3">              
+                        <table border="1" class="table table-bordered table-lg my-4 table">
+                            <thead id="thead">
+                                <tr class="text-center text-info">
+                                    <th>Title</th>
+                                    <th>original Url</th>
+                                    <th>Short Url</th>
+                                    <th>Time</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                            {% for url in page_obj %}
+                            <tr class="p-2 text-center text-white ">
+                                <td class="align-middle" class="align-middle">{{ url.title}}</td>
+                                <td class="w-25 align-middle">{{url.original_url}}</td>
+                                <td class="align-middle">{{url.short_url}}</td>
+                                <td class="align-middle">{{url.time}}</td>
+            
+                                <td class="align-middle"> <a href="{% url 'edit' url.id %}" class="btn btn-outline-success listBtn">Edit</a></td>
+                                <td class="align-middle"><a href="#deleteModal{{url.id}}" data-toggle="modal" class="btn btn-outline-danger listBtn">Delete</a></td>
+                            </tr>
+
+                            <!--Here the 'deleteModal' added with id so each url object uniquely identified-->
+                                <div class="modal fade" id="deleteModal{{url.id}}">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content deleteModal">
+                                        <div class="modal-body text-center ">
+                                        <button type="button" class="close text-white" data-dismiss="modal">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title text-white mt-4">
+                                            Are you sure want to delete?
+                                        </h4>
+                                        <div class="mb-4 mt-4 text-center">
+                                            <a
+                                            href="{% url 'delete' url.id %}"
+                                            class="btn btn-success btn-sm mr-3"
+                                            style="border-radius: 20px; padding: 4px 15px"
+                                            >Confirm</a
+                                            >
+                                            <button
+                                            class="btn btn-danger btn-sm"
+                                            class="close"
+                                            data-dismiss="modal"
+                                            style="border-radius: 20px; padding: 4px 15px"
+                                            >
+                                            Cancel
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <!----------------------Modal ends---------------------------->
+                            {% endfor %}
+                        </tbody>
+                        </table>   
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example" style="margin:auto;" >
+<ul class="pagination justify-content-center">
+{% if page_obj.has_previous %}
+
+<li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+<li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="previous">&laquo; previous</a></li>
+{% endif %}
+
+{% for page_number in page_obj.paginator.get_elided_page_range %}
+{% if page_obj.number == page_number %}
+<li class="page-item"><span class="page-link">{{ page_number }}</span></li>
+{% else %}
+<li class="page-item"><a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a></li>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+<li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">next &raquo;</a></li>
+<li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a></li>
+
+{% endif %}
+</ul>
+</nav>
+
+
+{% endblock %}

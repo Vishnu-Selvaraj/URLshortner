@@ -1,0 +1,16 @@
+{% extends 'layouts/mainLayout.html' %}
+
+{% block content %}
+
+<h1>Delete URL</h1>
+
+<p>Are Sure You want to delete "{{instObj.title}}"</p>
+    <form action="" method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">Confirm</button>
+
+    </form>
+
+{% endblock %}

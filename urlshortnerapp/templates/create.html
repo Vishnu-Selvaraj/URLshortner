@@ -1,0 +1,86 @@
+{% extends 'layouts/mainLayout.html' %}
+
+
+{% block style %}
+
+<style>
+
+  body{
+    background-color: rgb(8, 14, 44);
+    height: 100%;
+  }
+
+  #addurlForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #addBtn {
+    padding: 5px 50px;
+  }
+
+  #addurlCard {
+    background-color: rgba(255,255,255, 0.8);
+    border-radius: 20px;
+  }
+
+  input[type='text'],
+    input[type='url']{
+        background-color: rgba(255,255,255, 0.85);
+  }
+  
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-10 col-md-7" id="addurlForm">
+            <div class="card" id="addurlCard" >
+                <div class="card-body">
+                    <h3 class="card-title text-center text-primary font-weight-bold">
+                        ADD URL
+                    </h3>
+                    <!------------alert start----------------->
+                    {% if error != None %}
+                        <div class="alert alert-danger mt-3 text-center">
+                            {{error}}
+                        </div>
+                    {% endif %}
+                    <!------------alert end----------------->
+
+                    <!------------form start----------------->
+                    <form action="" method="post" class="mt-4">
+
+                        {% csrf_token %}
+                        
+                        <div class="form-group d-flex justify-content-center">
+                            <input type="text" class="form-control col-10 mb-2" name="title" placeholder="Enter title">
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                        <input type="url" class="form-control col-10 mb-2" name="original_url" placeholder="Enter url">
+                        </div>
+                        <button id="addBtn" class="btn btn-info mx-auto d-block" type="submit">Shorten url</button>
+                    </form>
+                </div>
+            </div>
+
+        <!------------form end----------------->
+        
+        <!-----------shorten url footer------------->
+        {% if shorturl != None %}
+            <div class="card-footer d-flex justify-content-center mt-2" id="addurlCard">
+                    <p class="mr-2 font-weight-bold">Shorten url :</p>
+                    <a href="{{shorturl}}" target="_blank">{{shorturl}}</a>   
+            </div>
+        {% endif %}  
+        <!-----------shorten url footer end------------->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
