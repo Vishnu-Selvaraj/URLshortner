@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY','key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG',False)
 
-ALLOWED_HOSTS = ["shurl-dx9w.onrender.com,localhost"]
+ALLOWED_HOSTS = ["shurl-dx9w.onrender.com","localhost"]
 
 
 # Application definition
