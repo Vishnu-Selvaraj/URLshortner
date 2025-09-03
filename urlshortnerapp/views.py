@@ -92,8 +92,8 @@ def get_short_url_to_show_add_page(req_user,url):
 def redirect_to_original(request,rand_char):
     print(request.GET)
     print(rand_char)
-    if Urlshortner.objects.filter(short_url = f'http://127.0.0.1:8000/{rand_char}').exists():
-        original_path = Urlshortner.objects.filter(short_url = f'http://127.0.0.1:8000/{rand_char}').first()
+    if Urlshortner.objects.filter(short_url = f'https://shurl-dx9w.onrender.com/{rand_char}').exists():
+        original_path = Urlshortner.objects.filter(short_url = f'https://shurl-dx9w.onrender.com/{rand_char}').first()
         return redirect(original_path.original_url)
     
     return HttpResponse('Invalid Link')
