@@ -151,7 +151,7 @@ $('#search-form').on('keyup',function(event){
                             <tr class="p-2 text-center text-white ">
                                 <td class="align-middle" class="align-middle">{{ url.title}}</td>
                                 <td class="w-25 align-middle">{{url.original_url}}</td>
-                                <td class="align-middle">{{url.short_url}}</td>
+                                <td class="align-middle"><a href="{{url.short_url}}" target="_blank">{{url.short_url}}</a></td>
                                 <td class="align-middle">{{url.time}}</td>
             
                                 <td class="align-middle"> <a href="{% url 'edit' url.id %}" class="btn btn-outline-success listBtn">Edit</a></td>

@@ -54,7 +54,7 @@ def create_fn(request):
     error = None
     if request.POST:
         url = Urlshortner.objects.filter(user = request.user)
-        if url.count() >=5:
+        if url.count() >=10:
             error ='Your limit has been reached.'
             return render(request,'create.html',{'shorturl':shorturl,'error':error})
         else:

@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tmgeh=xgp@#dt-lk%^mir^7o^s$(7l^()kq%i#w%3w$#v44phh'
+SECRET_KEY = os.environ.get('SECRET_KEY','key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG',False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -75,15 +78,20 @@ WSGI_APPLICATION = 'urlshortner_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/vishnu/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'url_short_testdj',#Name of the database created for this project
-        'USER': 'root',#Enter your mysql username
-        'PASSWORD': '',#Enter your mysql password
-        'HOST': 'localhost',
-        'PORT': '3306',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+db_url = os.environ.get("DATABASE_URL")
+if db_url:
+    DATABASES["default"] = dj_database_url.config(
+        env=os.environ.get('DB_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/sraj/settings/#auth-password-validators
