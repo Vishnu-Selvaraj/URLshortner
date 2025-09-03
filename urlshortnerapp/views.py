@@ -12,6 +12,7 @@ import string
 import random
 
 # Create your views here.
+BASE_URL="https://shurl-dx9w.onrender.com/"
 
 def signup(request):
 
@@ -64,12 +65,12 @@ def create_fn(request):
             url = request.POST.get('original_url')
             print(url)
             random_char = ''.join(random.choices(string.ascii_lowercase,k = 7))
-            if Urlshortner.objects.filter(short_url = f'http://127.0.0.1:8000/{random_char}').exists():
+            if Urlshortner.objects.filter(short_url = f'{BASE_URL}{random_char}').exists():
                 random_char = ''.join(random.choices(string.ascii_lowercase,k = 7))
             url_obj.user = request.user
             url_obj.title = title
             url_obj.original_url = url
-            url_obj.short_url = f'http://127.0.0.1:8000/{random_char}'
+            url_obj.short_url = f'{BASE_URL}{random_char}'
             url_obj.time = datetime.datetime.now().time()
             url_obj.save()
             shorturl = get_short_url_to_show_add_page(req_user,url) 
@@ -92,8 +93,8 @@ def get_short_url_to_show_add_page(req_user,url):
 def redirect_to_original(request,rand_char):
     print(request.GET)
     print(rand_char)
-    if Urlshortner.objects.filter(short_url = f'https://shurl-dx9w.onrender.com/{rand_char}').exists():
-        original_path = Urlshortner.objects.filter(short_url = f'https://shurl-dx9w.onrender.com/{rand_char}').first()
+    if Urlshortner.objects.filter(short_url = f'{BASE_URL}{rand_char}').exists():
+        original_path = Urlshortner.objects.filter(short_url = f'{BASE_URL}{rand_char}').first()
         return redirect(original_path.original_url)
     
     return HttpResponse('Invalid Link')
